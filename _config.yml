@@ -3,7 +3,7 @@
 #
 
 # Name of your site (displayed in the header)
-name: Max Serier
+name: Max Serier's Blog
 
 # Short bio or description (displayed in the header)
 description: Applied Computer Science student who focuses on Game Development
@@ -22,6 +22,7 @@ footer-links:
   facebook:
   flickr:
   github: 
+  git: https://bitbucket.org/MSerier/
   instagram:
   linkedin:
   pinterest:
