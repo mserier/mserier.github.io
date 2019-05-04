@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Extending your game to the real world.<br><h4>(AKA Game State Integration)</h4>
+title: Extending your game to the real world.<h4><br style="line-height:0px;"(AKA Game State Integration)/></h4>
 ---
 
 You might find yourself in the situation where you want to integrate your game with external services. Custom lighting for your keyboard and mouse, interactive merchandise or even stage effects for a tournament.
