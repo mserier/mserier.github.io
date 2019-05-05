@@ -14,6 +14,10 @@ To accomplish this successfully you need to
 Spoiler: You are probably going to create a udp server, yourself and not via a high level networking library!
 Why? Because what you want is to present your game data without the need for in-order or reliability. And this is exactly what a simple connectionless udp protocol gives you. The server presents the information on a (local ip)+port and any peripheral can just listen on here and use whatever information it’s given. Now of course (and always in the programming world) you may actually in-order or reliability or even need a two way communication. In this case you should use a suitable network protocol.
 
+****
+An extreme example could be the stage effects of an esports game. The player doesn't have enough time to diffuse the bomb and when it explodes ingame, a explosion effect is played in the arena screen and the bracelets start flashing. 
+**** 
+
 <div id="player"></div>
 <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
 <script type="text/javascript">
@@ -42,7 +46,7 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
     loopStart();
     player.mute();
-    player.playVideo();
+    //player.playVideo();
 }
 function loopStart() {
     player.seekTo(2552);
@@ -53,9 +57,8 @@ function onPlayerStateChange(event) {
     }
 }
 </script>
-****
-Example of a explosion stage effect. The player doesn't have enough time to diffuse the bomb and when it explodes ingame, a explosion effect is played in the arena screen and the bracelets start flashing.
-****
+
+But since people who create these effects are industry profesionals and know what they are doing I will just focus on the UDP example which you can easily implement and experiment with.
  
 Since it’s easier to create a server when you know what you need to send we will talk about receiving it first by creating a implementation for codemasters UDP Telemetry Output. This will work on the recent racing games like Dirt Rally, F1 2013 and newer.
 ## Receive and process the data
