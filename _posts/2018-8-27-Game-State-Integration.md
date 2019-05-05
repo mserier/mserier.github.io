@@ -15,7 +15,7 @@ Spoiler: You are probably going to create a udp server, yourself and not via a h
 Why? Because what you want is to present your game data without the need for in-order or reliability. And this is exactly what a simple connectionless udp protocol gives you. The server presents the information on a (local ip)+port and any peripheral can just listen on here and use whatever information it’s given. Now of course (and always in the programming world) you may actually in-order or reliability or even need a two way communication. In this case you should use a suitable network protocol.
 
 ---- 
-An extreme example could be the stage effects of an esports game. The player doesn't have enough time to diffuse the bomb and when it explodes ingame, a explosion effect is played in the arena screen and the bracelets start flashing. 
+An extreme example could be the stage effects of an esports game. The player doesn't have enough time to diffuse the bomb and when it explodes ingame, a explosion effect is played in the arena screen and the bracelets start flashing.  
 **** 
 
 <div id="player"></div>
@@ -30,7 +30,7 @@ function onYouTubeIframeAPIReady() {
           controls: 0,
           showinfo: 0,
           modestbranding: 1,
-          loop: 1,
+          //loop: 1,
           fs: 0,
           cc_load_policy: 0,
           iv_load_policy: 3,
