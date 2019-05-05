@@ -17,7 +17,7 @@ Why? Because what you want is to present your game data without the need for in-
 ---- 
 An extreme example could be the stage effects of an esports game. The player doesn't have enough time to diffuse the bomb and when it explodes ingame, a explosion effect is played in the arena screen and the bracelets start flashing.
 **** 
-**** 
+-
 
 <div id="player"></div>
 <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
@@ -46,7 +46,7 @@ function onYouTubeIframeAPIReady() {
 }
 function onPlayerReady(event) {
     //loopStart();
-    player.seekTo(2552);
+    //player.seekTo(2552);
     player.mute();
     //player.playVideo();
     //player.stopVideo();
@@ -55,13 +55,13 @@ function loopStart() {
     //player.seekTo(2552);
 }
 function autoStop(){
-        player.seekTo(2552);
+        //player.seekTo(2552);
         player.stopVideo();
 }
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         setTimeout(autoStop, 12200);
-        //player.seekTo(2552);
+        player.seekTo(2552);
         //player.stopVideo();
     }
 }
