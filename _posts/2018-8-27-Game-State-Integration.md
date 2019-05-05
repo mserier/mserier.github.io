@@ -45,14 +45,14 @@ function onYouTubeIframeAPIReady() {
     });
 }
 function onPlayerReady(event) {
-    //loopStart();
+    loopStart();
     //player.seekTo(2552);
     player.mute();
-    //player.playVideo();
+    player.playVideo();
     //player.stopVideo();
 }
 function loopStart() {
-    //player.seekTo(2552);
+    player.seekTo(2552);
 }
 function autoStop(){
         //player.seekTo(2552);
@@ -60,8 +60,8 @@ function autoStop(){
 }
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
-        setTimeout(autoStop, 12200);
-        player.seekTo(2552);
+        setTimeout(loopStart, 12200);
+        //player.seekTo(2552);
         //player.stopVideo();
     }
 }
