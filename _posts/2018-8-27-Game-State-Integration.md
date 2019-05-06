@@ -23,7 +23,6 @@ An extreme example could be the stage effects of an esports game. The player doe
 <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
 <script type="text/javascript">
 var player;
-var startedPlaying = false;
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         //height: '390',
@@ -49,10 +48,6 @@ function onPlayerReady(event) {
     loopStart();
     //player.seekTo(2552);
     player.mute();
-    if(startedPlaying)
-    {
-        player.playVideo();
-    }
     //player.stopVideo();
 }
 function loopStart() {
@@ -67,7 +62,6 @@ function onPlayerStateChange(event) {
         setTimeout(loopStart, 12200);
         //player.seekTo(2552);
         //player.stopVideo();
-        startedPlaying = true;
     }
 }
 </script>
