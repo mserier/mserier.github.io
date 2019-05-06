@@ -45,7 +45,7 @@ function onYouTubeIframeAPIReady() {
     });
 }
 function onPlayerReady(event) {
-    loopStart();
+    //loopStart();
     //player.seekTo(2552);
     player.mute();
     //player.stopVideo();
