@@ -37,6 +37,7 @@ function onYouTubeIframeAPIReady() {
           fs: 0,
           cc_load_policy: 0,
           iv_load_policy: 3,
+          start: 2552, //fix for the offset when the video is played for the first time
           autohide: 0
         },
         videoId: 'kgitmggEgrA',
