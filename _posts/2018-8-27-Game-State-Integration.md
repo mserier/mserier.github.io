@@ -2,8 +2,8 @@
 layout: subtitlepost
 title: "Extending your game to the real world."
 subtitle: (AKA Game State Integration)
-category: Networking
-tags: java
+categories: [blog, article]
+tags: [java, networking, arduino]
 ---
 
 You might find yourself in the situation where you want to integrate your game with external services. Custom lighting for your keyboard and mouse, interactive merchandise or even stage effects for a tournament.
