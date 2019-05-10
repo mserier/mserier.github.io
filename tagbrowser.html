@@ -6,11 +6,10 @@ title: Tags
 <div class="tags">
   tags:
   {% for tag in site.tags %}
+    <h2>tag</h2>
+    <h2>site.tags.tag</h2>
     {% for post in site.tags.tag %}
     <article class="post">
-      <h2>tag</h2>
-      
-      <h2>site.tags.tag</h2>
       
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
 
