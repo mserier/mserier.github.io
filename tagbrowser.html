@@ -8,7 +8,7 @@ title: Tags
   {% for tag in site.tags %}
     <h2>tag</h2>
     <h2>site.tags.tag</h2>
-    {% for post in site.tags.tag %}
+    {% for post in tag %}
     <article class="post">
       
       <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
