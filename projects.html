@@ -2,22 +2,27 @@
 layout: default
 published: true
 ---
-
 <div class="projects">
   {% for project in site.categories.project %}
-    <article class="projects">
-
-      <div><h1 style="line-height:0px;"><a href="{{ site.baseurl }}{{ project.url }}">{{ project.title }}
-      <h4>{{ project.subtitle }}</h4></a></h1></div>
-      
-      <div class="entry">
+    
+	<article class="projects">
+		<div>
+			<h1 style="line-height:0px;">
+				<a href="{{ site.baseurl }}{{ project.url }}">{{ project.title }}
+      	
+					<h4>{{ project.subtitle }}</h4>
+				</a>
+			</h1>
+		</div>
+		<div class="entry">
         {{ project.excerpt }}
       </div>
-
-      <a href="{{ site.baseurl }}{{ project.url }}" class="read-more">Read More</a>
-    </article>
+		<a href="{{ site.baseurl }}{{ project.url }}" class="read-more">Read More</a>
+	</article>
   
-      ----
+  
+---- 
   
   {% endfor %}
+
 </div>
