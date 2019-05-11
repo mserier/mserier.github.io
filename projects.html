@@ -2,10 +2,10 @@
 layout: default
 published: true
 ---
-<div class="projects">
+<div class="posts">
   {% for project in site.categories.project %}
     
-	<article class="projects">
+	<article class="posts">
 		<div>
 			<h1 style="line-height:0px;">
 				<a href="{{ site.baseurl }}{{ project.url }}">{{ project.title }}
@@ -19,7 +19,6 @@ published: true
       </div>
 		<a href="{{ site.baseurl }}{{ project.url }}" class="read-more">Read More</a>
 	</article>
-	<hr style="color: #eeeeee; background-color: #eeeeee;">  
   {% endfor %}
 
 </div>
