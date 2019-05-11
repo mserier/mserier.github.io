@@ -1,9 +1,16 @@
 ---
 layout: subtitlepost
-title: "Extending your game to the real world."
+title: Extending your game to the real world.
 subtitle: (AKA Game State Integration)
-categories: [blog, article]
-tags: [java, networking, arduino]
+categories:
+  - blog
+  - article
+  - project
+tags:
+  - java
+  - networking
+  - arduino
+published: true
 ---
 
 You might find yourself in the situation where you want to integrate your game with external services. Custom lighting for your keyboard and mouse, interactive merchandise or even stage effects for a tournament.
@@ -74,5 +81,3 @@ But since people who create these effects are industry profesionals and know wha
 Since it’s easier to create a server when you know what you need to send we will talk about receiving it first by creating a implementation for codemasters UDP Telemetry Output. This will work on the recent racing games like Dirt Rally, F1 2013 and newer.
 ## Receive and process the data
 We will be creating a shift indicator with some random leds and an arduino I have laying around.
-
-
