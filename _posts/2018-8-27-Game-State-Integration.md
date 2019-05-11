@@ -28,9 +28,7 @@ An extreme example could be the stage effects of an esports game. The player doe
 
 ----
 
-
-
-<div id="player"></div>
+<div id="player"><br></div>
 <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
 <script type="text/javascript">
 var player;
