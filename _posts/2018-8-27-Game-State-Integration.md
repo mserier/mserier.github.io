@@ -25,8 +25,9 @@ Why? Because what you want is to present your game data without the need for in-
 
 ---- 
 An extreme example could be the stage effects of an esports game. The player doesn't have enough time to diffuse the bomb and when it explodes ingame, a explosion effect is played in the arena screen and the bracelets start flashing.
-**** 
--
+
+----
+
 
 <div id="player"></div>
 <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
