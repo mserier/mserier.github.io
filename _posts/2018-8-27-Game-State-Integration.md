@@ -28,53 +28,55 @@ An extreme example could be the stage effects of an esports game. The player doe
 
 ----
 
-<div id="player"><br></div>
-<script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
-<script type="text/javascript">
-var player;
-function onYouTubeIframeAPIReady() {
-    player = new YT.Player('player', {
-        //height: '390',
-        //width: '640',
-      	playerVars: {
-          controls: 0,
-          showinfo: 0,
-          modestbranding: 1,
-          //loop: 1,
-          fs: 0,
-          cc_load_policy: 0,
-          iv_load_policy: 3,
-          start: 2552, //fix for the offset when the video is played for the first time
-          autohide: 0
-        },
-        videoId: 'kgitmggEgrA',
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
-        }
-    });
-}
-function onPlayerReady(event) {
-    //loopStart();
-    //player.seekTo(2552);
-    player.mute();
-    //player.stopVideo();
-}
-function loopStart() {
-    player.seekTo(2552);
-}
-function autoStop(){
-        //player.seekTo(2552);
-        player.stopVideo();
-}
-function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING) {
-        setTimeout(loopStart, 12200);
-        //player.seekTo(2552);
-        //player.stopVideo();
-    }
-}
-</script>
+<div>
+  <div id="player"><br></div>
+  <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
+  <script type="text/javascript">
+  var player;
+  function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+          //height: '390',
+          //width: '640',
+          playerVars: {
+            controls: 0,
+            showinfo: 0,
+            modestbranding: 1,
+            //loop: 1,
+            fs: 0,
+            cc_load_policy: 0,
+            iv_load_policy: 3,
+            start: 2552, //fix for the offset when the video is played for the first time
+            autohide: 0
+          },
+          videoId: 'kgitmggEgrA',
+          events: {
+              'onReady': onPlayerReady,
+              'onStateChange': onPlayerStateChange
+          }
+      });
+  }
+  function onPlayerReady(event) {
+      //loopStart();
+      //player.seekTo(2552);
+      player.mute();
+      //player.stopVideo();
+  }
+  function loopStart() {
+      player.seekTo(2552);
+  }
+  function autoStop(){
+          //player.seekTo(2552);
+          player.stopVideo();
+  }
+  function onPlayerStateChange(event) {
+      if (event.data == YT.PlayerState.PLAYING) {
+          setTimeout(loopStart, 12200);
+          //player.seekTo(2552);
+          //player.stopVideo();
+      }
+  }
+  </script>
+</div>
 
 But since people who create these effects are industry profesionals and know what they are doing I will just focus on the UDP example which you can easily implement and experiment with.
  
