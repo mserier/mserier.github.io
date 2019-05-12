@@ -28,7 +28,7 @@ An extreme example could be the stage effects of an esports game. The player doe
 
 ----
 
-<div>
+<div style = "position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;">
   <div style = "position: absolute; top: 0; left: 0; width: 100%; height: 100%;" id="player"><br></div>
   <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
   <script type="text/javascript">
