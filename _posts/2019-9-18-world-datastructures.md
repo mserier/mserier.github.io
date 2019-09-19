@@ -16,9 +16,9 @@ I will be giving some examples of different world structures and how I store my 
 ## Open World Sandbox
 
 ---- 
-*Lots of placeable items/objects
-*Different parts of the world need to be loaded and unloaded quickly
-*Often has dense and sparse parts
+* Lots of placeable items/objects
+* Different parts of the world need to be loaded and unloaded quickly
+* Often has dense and sparse parts
 
 I've considered to options:
 Pregenerate a complex world and fully sync the devices on all players. This means that connect times are pretty long since the whole world needs to be downloaded to the player but it means that the world isn't limited in complexity and player count. Once the player has an up to date world it can receive all changes and apply this localy.
