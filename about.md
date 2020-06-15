@@ -12,7 +12,7 @@ My interest in programming has emerged during highschool from games, starting wi
 ### More Information
 
 I have finished classes for:
-C, C++, Java, Databases, Computer Graphics, A.I., Data Networks, Calculus, Digital Signal Processing (intoductionary), Microcontrollers, Embedded Systems (included VHDL), Telecom & Wireless, Electric Circuits DC/AC. 
+C, C++, Java, Databases, Computer Graphics, A.I., Data Networks, Calculus, Digital Signal Processing (intoductionary), Microcontrollers, Embedded Systems (including VHDL), Telecom & Wireless, Electric Circuits DC/AC. 
 
 I have gained experience from my personal projects and experiments in Unity3D, Evolutionary Machine Learning, Linux and Game Engine Design.
 ### Contact me
