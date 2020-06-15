@@ -30,7 +30,7 @@ It has the following requirements:
 - The terrain should be saved and loaded from the disk.
 
 ### Expample of simple terrain using the voxel system:
-![Simple Terrain without props](/images/Voxel_Terrain_Simple.png "Simple Terrain without props")
+![Simple Terrain without props](/images/voxel_terrain_simple.png "Simple Terrain without props")
 
 ### Expample of how the terrain is editable.
 euhm no picture? :'(
