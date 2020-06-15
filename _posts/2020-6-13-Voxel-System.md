@@ -41,6 +41,7 @@ For this project I've choosen the Universal Project Template. This template uses
 
 In the scene hierarchy are the following relevant objects
 
+### Root
 > ### [FA_World]
 > > Self spawning (as noted with the brackets) through a singleton .
 > 
