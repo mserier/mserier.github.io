@@ -33,7 +33,7 @@ It has the following requirements:
 ![Simple Terrain without props](/images/Voxel_Terrain_Simple.png "Simple Terrain without props")
 
 ## Expample of how the terrain is editable.
-![whoops](/images/404.jpg "whoops") {:height="36" width="36"}
+euhm no picture? :'(
 
 
 ### Project Structure
