@@ -21,6 +21,9 @@ It's a simple process to generate a mesh from a field of values. I Immidiently w
 To challenge myself I've only used the video as reference and not looked at Sebastians code. I did take his advice to use an [existing triangulation table](http://paulbourke.net/geometry/polygonise/). But again I did not look at the code from that document.
 
 
+![Simple Terrain without props](/images/Voxel_Terrain_Simple.png "Simple Terrain without props")
+
+
 ### Project Structure
 For this project I've choosen the Universal Project Template. This template uses the Universal Rendering Pipeline (URP) which formerly was know as Lightweight Render Pipeline.
 
