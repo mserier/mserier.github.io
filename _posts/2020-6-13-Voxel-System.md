@@ -33,7 +33,7 @@ It has the following requirements:
 ![Simple Terrain without props](/images/voxel_terrain_simple.png "Simple Terrain without props")
 
 ### Expample of how the terrain is editable.
-euhm no picture? :'(
+![Terrain Hobbit Hole](/images/voxel_terrain_simple2.png "Terrain Hobbit Hole")
 
 
 ## Project Structure
