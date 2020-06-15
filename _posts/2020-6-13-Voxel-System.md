@@ -20,17 +20,20 @@ It's a simple process to generate a mesh from a field of values. I Immidiently w
 
 To challenge myself I've only used the video as reference and not looked at Sebastians code. I did take his advice to use an [existing triangulation table](http://paulbourke.net/geometry/polygonise/). But again I did not look at the code from that document.
 
+
+### Project Content
+
 This project is a proof on concept of a terrain generator which should be suitable for an open world sandbox game.
 It has the following requirements:
 - Generation need to be quick enough to generate new terrain live while playing.
 - The terrain should be editable after generation.
 - The terrain should be saved and loaded from the disk.
 
-### Expample of simple terrain using the voxel system:
+## Expample of simple terrain using the voxel system:
 ![Simple Terrain without props](/images/Voxel_Terrain_Simple.png "Simple Terrain without props")
 
-
-
+## Expample of how the terrain is editable.
+![whoops](/images/404.jpg "whoops")
 
 
 ### Project Structure
