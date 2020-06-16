@@ -48,3 +48,11 @@ In the scene hierarchy are the following relevant objects
 > ### Terrain
 > > Has the Voxel Terrain Spawner (script) component which will spawn chunk objects as children.
 
+
+
+## Some title or segway idk
+
+//explain single voxel (and that it requires 4 points values)
+
+//explain voxelchunks
+To make the terrain generatable while playing I divided the voxels in chunks of values. Deciding the exact specifications of a single chunk is quite tricky. The smaller you make them the faster you can spawn them (generate/load the values, sampling every voxel creating the mesh data and the (abstracted behind Unity) sending of the mesh data to the gpu). However this also induces lots of overhead when you want lots of chunks at the same time (Keeping track of which chunks are loaded, disk i/o of actual the actual loading).
