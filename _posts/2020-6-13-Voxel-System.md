@@ -57,8 +57,7 @@ In the scene hierarchy are the following relevant objects
 The term voxel means volumentric pixel, this can be any representation of a pixel as long as it has "volume". A simple example being cubes (e.g. Minecraft terrain), every pixel (voxel) has a 3D location and on that location a cube is rendered. 
 
 Since a cube is already a recognisable (and stackable) shape it's trivial to make a surface representation of an 3D shape. The voxel system from this project is sligthy more complex. The pixels (voxels) can have multiple "shapes" (15 unique) and these shapes are defined in the triangulation table.
-&NewLine;
-&NewLine;
+<br><br><br>
 <a title="Jmtrivial / GPL (http://www.gnu.org/licenses/gpl.html)" href="https://commons.wikimedia.org/wiki/File:MarchingCubes.svg"><img width="800" alt="MarchingCubes" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/MarchingCubes.svg/1024px-MarchingCubes.svg.png"></a>
 
 -The configurations the voxel can take depending on the voxel points
