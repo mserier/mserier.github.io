@@ -52,10 +52,14 @@ In the scene hierarchy are the following relevant objects
 
 ## Some title or segway idk
 
-//explain single voxel (and that it requires 4 points values)
-The term voxel means volumentric pixel, this can be any representation the simplest to understand being cubes (e.g. Minecraft terrain) every pixel (voxel) has a 3D location and on that location a cube is rendered. Since a cube is already a recognisable (and stackable) shape it's trivial to make a surface representation. The voxel system from this project is sligthy more complex. The pixels (voxels) can have multiple "shapes" (15 unique) and these shapes are found in the triangulation table.
+The term voxel means volumentric pixel, this can be any representation of a pixel as long as it has "volume". A simple example being cubes (e.g. Minecraft terrain), every pixel (voxel) has a 3D location and on that location a cube is rendered. Since a cube is already a recognisable (and stackable) shape it's trivial to make a surface representation of an 3D shape. The voxel system from this project is sligthy more complex. The pixels (voxels) can have multiple "shapes" (15 unique) and these shapes are found in the triangulation table.
 
-Which shape a voxel has is determined by 8 values. To get these values we sample points from a 3D grid. If we make sure that every point is also used for the next voxel we automatically get a coherent surface. Because of this I will call the collection of 8 pixels a "voxel" and the values (which are technically the voxels) "voxel points"
+Which shape a voxel has is determined by 8 values. To get these values we sample points from a 3D grid. If we make sure that every point is also used for the next voxel we automatically get a coherent surface. Because of this I will call the collection of 8 pixels a "voxel" and the values (which are technically the voxels) "voxel points".
+
+![Linked Voxels](/images/linked_voxels.png "Linked Voxels")
+-Visualisation of how each (2D) voxel samples it's voxel points.
+
+<a href="url"><img src="/images/linked_voxels.png" align="left" height="200"></a>
 
 //explain voxelchunks
 To make the terrain generatable while playing I divided the voxels in chunks of values. Deciding the exact specifications of a single chunk is quite tricky. The smaller you make them the faster you can spawn them (generate/load the values, sampling every voxel creating the mesh data and the (abstracted behind Unity) sending of the mesh data to the gpu). However this also induces lots of overhead when you want lots of chunks at the same time (Keeping track of which chunks are loaded, disk i/o of actual the actual loading).
