@@ -56,10 +56,10 @@ The term voxel means volumentric pixel, this can be any representation of a pixe
 
 Which shape a voxel has is determined by 8 values. To get these values we sample points from a 3D grid. If we make sure that every point is also used for the next voxel we automatically get a coherent surface. Because of this I will call the collection of 8 pixels a "voxel" and the values (which are technically the voxels) "voxel points".
 
-![Linked Voxels](/images/linked_voxels.png "Linked Voxels")
+\!\[Linked Voxels\]\(/images/linked_voxels.png "Linked Voxels"\)
+<a href="url"><img src="/images/linked_voxels.png" height="300" style="vertical-align:middle;margin:100px 100px" ></a>
 -Visualisation of how each (2D) voxel samples it's voxel points.
 
-<a href="url"><img src="/images/linked_voxels.png" align="left" height="200"></a>
 
 //explain voxelchunks
 To make the terrain generatable while playing I divided the voxels in chunks of values. Deciding the exact specifications of a single chunk is quite tricky. The smaller you make them the faster you can spawn them (generate/load the values, sampling every voxel creating the mesh data and the (abstracted behind Unity) sending of the mesh data to the gpu). However this also induces lots of overhead when you want lots of chunks at the same time (Keeping track of which chunks are loaded, disk i/o of actual the actual loading).
