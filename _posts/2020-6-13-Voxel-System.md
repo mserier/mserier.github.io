@@ -20,6 +20,8 @@ It's a simple process to generate a mesh from a field of values. I was immediate
 
 To challenge myself I've only used the video as reference and not looked at Sebastians code. I did take his advice to use an [existing triangulation table](http://paulbourke.net/geometry/polygonise/). But again I did not look at the code from that document.
 
+The aim of this article is just to demonstrate how I interperated and implemented the "marching cube" algorithm but not to explain the concept of polygonising or the marching cube algorithm. If you want to have a good explenation I recommend using [Sebastian Lague's video](https://www.youtube.com/watch?v=M3iI2l0ltbE) and the listed resources from his video description.
+
 
 ## Project Content
 
@@ -55,6 +57,7 @@ In the scene hierarchy are the following relevant objects
 The term voxel means volumentric pixel, this can be any representation of a pixel as long as it has "volume". A simple example being cubes (e.g. Minecraft terrain), every pixel (voxel) has a 3D location and on that location a cube is rendered. 
 
 Since a cube is already a recognisable (and stackable) shape it's trivial to make a surface representation of an 3D shape. The voxel system from this project is sligthy more complex. The pixels (voxels) can have multiple "shapes" (15 unique) and these shapes are defined in the triangulation table.
+
 
 <a title="Jmtrivial / GPL (http://www.gnu.org/licenses/gpl.html)" href="https://commons.wikimedia.org/wiki/File:MarchingCubes.svg"><img width="800" alt="MarchingCubes" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/MarchingCubes.svg/1024px-MarchingCubes.svg.png"></a>
 
