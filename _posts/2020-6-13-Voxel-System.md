@@ -81,7 +81,7 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 -Single 8x8 chunk filled with simplex noise.
 
 
-```C#
+{% highlight csharp %}
 	private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 	{
 		
@@ -150,4 +150,4 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 			MainThreadActions.Push( ()=> {chunkMesh.Clear(); chunkMesh.vertices = generatingMeshVertices.ToArray(); chunkMesh.triangles = generatingMeshTriangles.ToArray(); meshDone=true; mr.enabled=true;} );
 			//Debug.Log("pushed, count is :"+MainThreadActions.Count);
 	}
-```
+{% endhighlight %}
