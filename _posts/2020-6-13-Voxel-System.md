@@ -69,6 +69,12 @@ Which shape a voxel has is determined by 8 values. To get these values we sample
 
 -Visualisation of how each (2D) voxel samples it's voxel points.
 
+To make the terrain generatable while playing I divided the voxels in chunks of values. 
 
-//explain voxelchunks
-To make the terrain generatable while playing I divided the voxels in chunks of values. Deciding the exact specifications of a single chunk is quite tricky. The smaller you make them the faster you can spawn them (generate/load the values, sampling every voxel creating the mesh data and the (abstracted behind Unity) sending of the mesh data to the gpu). However this also induces lots of overhead when you want lots of chunks at the same time (Keeping track of which chunks are loaded, disk i/o of actual the actual loading).
+Originally I made a single chunk contain 4^3 voxelPoints but this ended up too low resolution for my liking. You could ofcourse scale it down and have more chunks at the same time but the overhead of keeping track of all of the transforms alone proved to be problematic. So I bumped it up to 8^3 voxelPoints per chunk and I found this to be good enough.
+
+
+[<img src="/images/8x8_chunk_simplex.png">](/images/8x8_chunk_simplex.png) 
+
+-Single 8x8 chunk filled with simplex noise.
+
