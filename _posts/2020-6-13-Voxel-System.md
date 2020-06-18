@@ -84,72 +84,77 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 <p style="color:blue;font-size:14px;">This is demo text</p>  
 	 
 {% highlight csharp %}
-	private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
+private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
+{
+
+
+	generatingMeshVertices.Clear();
+	generatingMeshTriangles.Clear();
+	mainChunk=null;
+
+	//Floor in steps of FA_Voxel_Chunk.CHUNK_UNITS_HALF and offset to the middle of the maximum range
+	Vector3 flooredTransform = new Vector3(Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).x/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF +128  ,
+	Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).y/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF  +128 ,
+	Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).z/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF  +128 ) ;
+
+
+	bool meshEmpty = true;
+
+
+	for (byte y = 0; y < FA_Voxel_Chunk.CHUNK_UNITS; y+=1)
 	{
-		
-		
-		generatingMeshVertices.Clear();
-		generatingMeshTriangles.Clear();
-		mainChunk=null;
-
-		//Floor in steps of FA_Voxel_Chunk.CHUNK_UNITS_HALF and offset to the middle of the maximum range
-		Vector3 flooredTransform = new Vector3(Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).x/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF +128  , Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).y/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF  +128 , Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).z/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF  +128 ) ;
-
-
-		bool meshEmpty = true;
-
-
-		for (byte y = 0; y < FA_Voxel_Chunk.CHUNK_UNITS; y+=1)
+		for (byte z = 0; z < FA_Voxel_Chunk.CHUNK_UNITS; z+=1)
 		{
-			for (byte z = 0; z < FA_Voxel_Chunk.CHUNK_UNITS; z+=1)
+			for (byte x = 0; x < FA_Voxel_Chunk.CHUNK_UNITS; x+=1)
 			{
-				for (byte x = 0; x < FA_Voxel_Chunk.CHUNK_UNITS; x+=1)
+				byte xP1 = (byte)(x+1);
+				byte yP1 = (byte)(y+1);
+				byte zP1 = (byte)(z+1);
+
+				//remember y-up
+				pointValues[0] = getChunkPointOrAdj(x, y, zP1, flooredTransform);
+				pointValues[1] = getChunkPointOrAdj(xP1, y, zP1, flooredTransform);
+				pointValues[2] = getChunkPointOrAdj(xP1, y, z, flooredTransform);
+				pointValues[3] = getChunkPointOrAdj(x, y, z, flooredTransform);
+				pointValues[4] = getChunkPointOrAdj(x, yP1, zP1, flooredTransform);
+				pointValues[5] = getChunkPointOrAdj(xP1, yP1, zP1, flooredTransform);
+				pointValues[6] = getChunkPointOrAdj(xP1, yP1, z, flooredTransform);
+				pointValues[7] = getChunkPointOrAdj(x, yP1, z, flooredTransform);
+
+
+				int triangulationIndex = calculate_triangle_index(pointValues);
+
+				//if(!(triangulationIndex==0 || triangulationIndex==255))
+				//if(!(pointValues[0]>=128||pointValues[1]>=128||pointValues[2]>=128||pointValues[3]>=128||pointValues[4]>=128||pointValues[5]>=128||pointValues[6]>=128||pointValues[7]>=128))
 				{
-					byte xP1 = (byte)(x+1);
-					byte yP1 = (byte)(y+1);
-					byte zP1 = (byte)(z+1);
+					//meshEmpty = false;
+				}
 
-					//remember y-up
-					pointValues[0] = getChunkPointOrAdj(x, y, zP1, flooredTransform);
-					pointValues[1] = getChunkPointOrAdj(xP1, y, zP1, flooredTransform);
-					pointValues[2] = getChunkPointOrAdj(xP1, y, z, flooredTransform);
-					pointValues[3] = getChunkPointOrAdj(x, y, z, flooredTransform);
-					pointValues[4] = getChunkPointOrAdj(x, yP1, zP1, flooredTransform);
-					pointValues[5] = getChunkPointOrAdj(xP1, yP1, zP1, flooredTransform);
-					pointValues[6] = getChunkPointOrAdj(xP1, yP1, z, flooredTransform);
-					pointValues[7] = getChunkPointOrAdj(x, yP1, z, flooredTransform);
+				int[] triangles = FA_ChunkSpawner.TRIANGLES[triangulationIndex];
 
+				if(tmpDOT!=null)
+					Instantiate(tmpDOT, new Vector3(x, y, z), Quaternion.identity);
 
-					int triangulationIndex = calculate_triangle_index(pointValues);
+				int i;
+				for(i=0;triangles[i]>=0;i++)
+				{
+					//use this if the chunks arent exactly aligned
+					//generatingMeshVertices.Insert(i, getVoxelVertexPositionAccurate(triangles[i])+
+					new Vector3(x/2f - ((Vector3)FA_Voxel_Render_LocalPosition).x%FA_Voxel_Chunk.CHUNK_UNITS_HALF, y/2f -
+					((Vector3)FA_Voxel_Render_LocalPosition).y%FA_Voxel_Chunk.CHUNK_UNITS_HALF, z/2f -
+					((Vector3)FA_Voxel_Render_LocalPosition).z%FA_Voxel_Chunk.CHUNK_UNITS_HALF)  );
+					generatingMeshVertices.Insert(i, getVoxelVertexPositionAccurate(triangles[i])+new Vector3(x/2f , y/2f , z/2f )  );
 
-					//if(!(triangulationIndex==0 || triangulationIndex==255))
-					//if(!(pointValues[0]>=128||pointValues[1]>=128||pointValues[2]>=128||pointValues[3]>=128||pointValues[4]>=128||pointValues[5]>=128||pointValues[6]>=128||pointValues[7]>=128))
-					{
-						//meshEmpty = false;
-					}
-					
-					int[] triangles = FA_ChunkSpawner.TRIANGLES[triangulationIndex];
-
-					if(tmpDOT!=null)
-						Instantiate(tmpDOT, new Vector3(x, y, z), Quaternion.identity);
-
-					int i;
-					for(i=0;triangles[i]>=0;i++)
-					{
-						//use this if the chunks arent exactly aligned
-						//generatingMeshVertices.Insert(i, getVoxelVertexPositionAccurate(triangles[i])+new Vector3(x/2f - ((Vector3)FA_Voxel_Render_LocalPosition).x%FA_Voxel_Chunk.CHUNK_UNITS_HALF, y/2f - ((Vector3)FA_Voxel_Render_LocalPosition).y%FA_Voxel_Chunk.CHUNK_UNITS_HALF, z/2f - ((Vector3)FA_Voxel_Render_LocalPosition).z%FA_Voxel_Chunk.CHUNK_UNITS_HALF)  );
-						generatingMeshVertices.Insert(i, getVoxelVertexPositionAccurate(triangles[i])+new Vector3(x/2f , y/2f , z/2f )  );
-
-						generatingMeshTriangles.Add(generatingMeshTriangles.Count);//TODO is this dumb?
-					}
+					generatingMeshTriangles.Add(generatingMeshTriangles.Count);//TODO is this dumb?
 				}
 			}
 		}
-
-
-		//if(!meshEmpty)
-			//MainThreadActions.Push( ()=> {var watch = System.Diagnostics.Stopwatch.StartNew(); chunkMesh.Clear(); chunkMesh.vertices = generatingMeshVertices.ToArray(); chunkMesh.triangles = generatingMeshTriangles.ToArray(); meshDone=true; mr.enabled=true; watch.Stop(); Debug.Log("setting verts took :"+watch.ElapsedTicks); } );
-			MainThreadActions.Push( ()=> {chunkMesh.Clear(); chunkMesh.vertices = generatingMeshVertices.ToArray(); chunkMesh.triangles = generatingMeshTriangles.ToArray(); meshDone=true; mr.enabled=true;} );
-			//Debug.Log("pushed, count is :"+MainThreadActions.Count);
 	}
+
+
+	//if(!meshEmpty)
+		//MainThreadActions.Push( ()=> {var watch = System.Diagnostics.Stopwatch.StartNew(); chunkMesh.Clear(); chunkMesh.vertices = generatingMeshVertices.ToArray(); chunkMesh.triangles = generatingMeshTriangles.ToArray(); meshDone=true; mr.enabled=true; watch.Stop(); Debug.Log("setting verts took :"+watch.ElapsedTicks); } );
+		MainThreadActions.Push( ()=> {chunkMesh.Clear(); chunkMesh.vertices = generatingMeshVertices.ToArray(); chunkMesh.triangles = generatingMeshTriangles.ToArray(); meshDone=true; mr.enabled=true;} );
+		//Debug.Log("pushed, count is :"+MainThreadActions.Count);
+}
 {% endhighlight %}
