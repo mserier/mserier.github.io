@@ -81,7 +81,7 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 -Single 8x8 chunk filled with simplex noise.
 
 
-<p style="color:blue;font-size:18px;">This is demo text</p>  
+<p style="color:blue;font-size:14px;">This is demo text</p>  
 	 
 {% highlight csharp %}
 	private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
