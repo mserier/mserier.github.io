@@ -52,7 +52,7 @@ In the scene hierarchy are the following relevant objects
 
 
 
-## Some title or segway idk
+## A voxel
 
 The term voxel means volumentric pixel, this can be any representation of a pixel as long as it has "volume". A simple example being cubes (e.g. Minecraft terrain), every pixel (voxel) has a 3D location and on that location a cube is rendered. 
 
@@ -68,6 +68,9 @@ Which shape a voxel has is determined by 8 values. To get these values we sample
 <a href="/images/linked_voxels.png"><img src="/images/linked_voxels.png" height="300" style="vertical-align:middle;margin:10px 10px"> </a>
 
 -Visualisation of how each (2D) voxel samples it's voxel points.
+
+## Chunks of voxels
+---
 
 To make the terrain generatable while playing I divided the voxels in chunks of values. 
 
