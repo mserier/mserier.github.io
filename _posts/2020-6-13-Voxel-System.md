@@ -80,25 +80,24 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 
 -Single 8x8 chunk filled with simplex noise.
 
+## Code
+
+To finally get to it, I have made a function that
+1. Loops through all the positions of the chunk.
+2. For every position it gets the associated chunkPoints.
+3. Looks up which shape the voxel should have (from the triangulation table)
+4. Converts the shape to 3D coordinates in the world so we can generate the mesh.
+5. Further more the function actually sets the mesh to the GameObject but I've omitted this for now (The function is multithreaded and needs synchronisation to the main thread).
+
+
 
 {% highlight csharp %}
+private byte[] pointValues = new byte[8];
+
 private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 {
 
-
-	generatingMeshVertices.Clear();
-	generatingMeshTriangles.Clear();
-	mainChunk=null;
-
-	//Floor in steps of FA_Voxel_Chunk.CHUNK_UNITS_HALF and offset to the middle of the maximum range
-	Vector3 flooredTransform = new Vector3(Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).x/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF +128  ,
-	Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).y/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF  +128 ,
-	Mathf.Floor(((Vector3)FA_Voxel_Render_LocalPosition).z/FA_Voxel_Chunk.CHUNK_UNITS_HALF)*FA_Voxel_Chunk.CHUNK_UNITS_HALF  +128 ) ;
-
-
-	bool meshEmpty = true;
-
-
+	//Step 1
 	for (byte y = 0; y < FA_Voxel_Chunk.CHUNK_UNITS; y+=1)
 	{
 		for (byte z = 0; z < FA_Voxel_Chunk.CHUNK_UNITS; z+=1)
@@ -108,7 +107,10 @@ private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 				byte xP1 = (byte)(x+1);
 				byte yP1 = (byte)(y+1);
 				byte zP1 = (byte)(z+1);
-
+				//(Step 1)
+				
+				
+				//Step 2
 				//remember y-up
 				pointValues[0] = getChunkPointOrAdj(x, y, zP1, flooredTransform);
 				pointValues[1] = getChunkPointOrAdj(xP1, y, zP1, flooredTransform);
@@ -118,41 +120,27 @@ private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 				pointValues[5] = getChunkPointOrAdj(xP1, yP1, zP1, flooredTransform);
 				pointValues[6] = getChunkPointOrAdj(xP1, yP1, z, flooredTransform);
 				pointValues[7] = getChunkPointOrAdj(x, yP1, z, flooredTransform);
+				//(Step 2)
 
 
+				//Step 3
 				int triangulationIndex = calculate_triangle_index(pointValues);
-
-				//if(!(triangulationIndex==0 || triangulationIndex==255))
-				//if(!(pointValues[0]>=128||pointValues[1]>=128||pointValues[2]>=128||pointValues[3]>=128||pointValues[4]>=128||pointValues[5]>=128||pointValues[6]>=128||pointValues[7]>=128))
-				{
-					//meshEmpty = false;
-				}
-
+				
 				int[] triangles = FA_ChunkSpawner.TRIANGLES[triangulationIndex];
+				//(Step 3)
 
-				if(tmpDOT!=null)
-					Instantiate(tmpDOT, new Vector3(x, y, z), Quaternion.identity);
 
+				//Step 4
 				int i;
 				for(i=0;triangles[i]>=0;i++)
 				{
-					//use this if the chunks arent exactly aligned
-					//generatingMeshVertices.Insert(i, getVoxelVertexPositionAccurate(triangles[i])+
-					new Vector3(x/2f - ((Vector3)FA_Voxel_Render_LocalPosition).x%FA_Voxel_Chunk.CHUNK_UNITS_HALF, y/2f -
-					((Vector3)FA_Voxel_Render_LocalPosition).y%FA_Voxel_Chunk.CHUNK_UNITS_HALF, z/2f -
-					((Vector3)FA_Voxel_Render_LocalPosition).z%FA_Voxel_Chunk.CHUNK_UNITS_HALF)  );
-					generatingMeshVertices.Insert(i, getVoxelVertexPositionAccurate(triangles[i])+new Vector3(x/2f , y/2f , z/2f )  );
-
-					generatingMeshTriangles.Add(generatingMeshTriangles.Count);//TODO is this dumb?
+					//For step 5 you should store these vertices in a list or buffer.
+					getVoxelVertexPositionAccurate(triangles[i])+new Vector3(x/2f , y/2f , z/2f )
 				}
+				//(Step 4)
 			}
 		}
 	}
-
-
-		MainThreadActions.Push( ()=> {
-				chunkMesh.Clear(); chunkMesh.vertices = generatingMeshVertices.ToArray(); 
-				chunkMesh.triangles = generatingMeshTriangles.ToArray(); meshDone=true; mr.enabled=true;
-			} );
+	//Step 5 you should use the vertices to create a mesh object here.
 }
 {% endhighlight %}
