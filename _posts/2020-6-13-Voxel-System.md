@@ -82,8 +82,8 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 
 ## Code
 
-To finally get to it, I have made a function that
-1. Loops through all the positions of the chunk.
+To finally get to it, This is the function to create a single chunk.
+1. It loops through all the positions of the chunk.
 2. For every position it gets the associated chunkPoints.
 3. Looks up which shape the voxel should have (from the triangulation table)
 4. Converts the shape to 3D coordinates in the world so we can generate the mesh.
@@ -124,7 +124,7 @@ private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 
 
 				//Step 3
-				int triangulationIndex = calculate_triangle_index(pointValues);
+				int triangulationIndex = createTriangleIndex(pointValues);
 				
 				int[] triangles = FA_ChunkSpawner.TRIANGLES[triangulationIndex];
 				//(Step 3)
@@ -146,5 +146,118 @@ private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 		}
 	}
 	//Step 5 you should use the vertices to create a mesh object here.
+}
+{% endhighlight %}
+
+The function used for step 2 is as follows. Here it becomes aparent why we should just double the values at the edges of the chunks.
+For every voxel we have to check if it should get it's value from a neighboring chunk. I have optimised it a little by only checking the voxels that are on the edge of the chunk but I did not put much effort in because I would change the chunk behaviour anyway.
+
+
+{% highlight csharp %}
+private VA_Voxel_IO.FA_Chunk_Info mainChunk;
+private byte getChunkPointOrAdj(byte x, byte y, byte z, Vector3 FA_Voxel_Render_LocalPosition)
+{
+	FA_Voxel_Grid terrainGrid = new FA_Voxel_Grid(); //We only have 1 grid for now but in the future we should retrieve the grid instance here.
+
+	//Here we convert the local position of the chunk to the position of our chunk data structure
+	FA_Vector3Byte chunkPos = new FA_Vector3Byte((byte)((FA_Voxel_Render_LocalPosition.x+x/2f)/FA_Voxel_Chunk.CHUNK_UNITS_HALF),
+	(byte)((FA_Voxel_Render_LocalPosition.y+y/2f)/FA_Voxel_Chunk.CHUNK_UNITS_HALF),
+	(byte)((FA_Voxel_Render_LocalPosition.z+z/2f)/FA_Voxel_Chunk.CHUNK_UNITS_HALF));
+
+	//Check if the voxel is at the edge of the chunk, if this is the case we should get the chunkValue from the neigboring chunk.
+	VA_Voxel_IO.FA_Chunk_Info chunk;
+	if(x!=FA_Voxel_Chunk.CHUNK_UNITS&&y!=VA_Voxel_IO.CHUNK_UNITS&&z!=VA_Voxel_IO.CHUNK_UNITS)
+	{
+		//main chunk]
+		if(mainChunk==null)
+		{
+			mainChunk = VA_Voxel_IO.Instance.getChunk(chunkPos, terrainGrid);
+		}
+		chunk = mainChunk;
+	}
+	else
+	{
+		chunk = VA_Voxel_IO.Instance.getChunk(chunkPos, terrainGrid);
+	}
+
+	return chunk.getVoxelPoint(x%VA_Voxel_IO.CHUNK_UNITS, y%VA_Voxel_IO.CHUNK_UNITS, z%VA_Voxel_IO.CHUNK_UNITS);
+}
+{% endhighlight %}
+
+And for step 3 we loop through the 8 values. If the value is more or equal to 128 we toggle a bit at the index of the value. In S. Lagues video he has this value configurable but since we are generating all the values of the 3D grid anyway I don't really see a point since you can just add an offset there to each individual voxel point)
+
+{% highlight csharp %}
+int createTriangleIndex(byte[] values)
+{
+	int index=0;
+	for(int i=0;i<8;i++)
+	{
+		if(values[i] >= 128)
+		{
+			index |= 1 << i;
+		}
+	}
+
+	return index;
+}
+{% endhighlight %}
+
+And for step 4 we convert the vertex index into the corresponding position (relative to the voxel itself). This position could be interpolated and this can look better depending on the aesthetics you are going for but in my opinion it looks messy if the scale is large. I also intent to directly modify the voxels on an individual level, if you interpolate this means that the voxels will grow smoothly but to stop at the right time can get tedious in my experience.
+
+{% highlight csharp %}
+//index is the triangulation table index
+public Vector3 getVoxelVertexPosition(int index)
+{
+Vector3 res;
+
+switch(index)
+{
+    case 0:
+	res = new Vector3(0.5f,0,1f);
+    break;
+    case 1:
+	res = new Vector3(1f, 0, 0.5f);
+    break;
+    case 2:
+	res = new Vector3(0.5f, 0, 0);
+    break;
+    case 3:
+	res = new Vector3(0, 0, 0.5f);
+    break;
+
+    case 4:
+	res = new Vector3(0.5f,1,1f);
+    break;
+    case 5:
+	res = new Vector3(1f, 1, 0.5f);
+    break;
+    case 6:
+	res = new Vector3(0.5f, 1, 0);
+    break;
+    case 7:
+	res = new Vector3(0, 1, 0.5f);
+    break;
+
+    case 8:
+	res = new Vector3(0,0.5f,1);
+    break;
+    case 9:
+	res = new Vector3(1, 0.5f, 1);
+    break;
+    case 10:
+	res = new Vector3(1, 0.5f, 0);
+    break;
+    case 11:
+	res = new Vector3(0, 0.5f, 0);
+    break;
+
+    default:
+    	//This should never happen
+	res = new Vector3(0,0,0);
+	Debug.Log("Warning; THIS");
+    break;
+}
+
+return res/2f;
 }
 {% endhighlight %}
