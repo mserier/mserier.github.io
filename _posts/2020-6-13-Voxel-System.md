@@ -134,8 +134,12 @@ private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 				int i;
 				for(i=0;triangles[i]>=0;i++)
 				{
-					//For step 5 you should store these vertices in a list or buffer.
+					//getVoxelVertexPositionAccurate returns the position of the vertex (relative to itself)
+					//So we add the position of the Voxel to it (relative to the chunk)
+					//Since the voxel uses two values for every dimension we divide it with 2.
 					getVoxelVertexPositionAccurate(triangles[i])+new Vector3(x/2f , y/2f , z/2f )
+					
+					//For step 5 you should store these vertices in a list or buffer.
 				}
 				//(Step 4)
 			}
