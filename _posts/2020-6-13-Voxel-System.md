@@ -82,7 +82,9 @@ Originally I made a single chunk contain 4^3 voxelPoints but this ended up too l
 
 ## Code
 
-To finally get to it, This is the function to create a single chunk.
+### Mesh Generation
+
+To finally get to the code, This is the function to create a single chunk.
 1. It loops through all the positions of the chunk.
 2. For every position it gets the associated chunkPoints.
 3. Looks up which shape the voxel should have (from the triangulation table)
@@ -259,5 +261,61 @@ switch(index)
 }
 
 return res/2f;
+}
+{% endhighlight %}
+
+
+
+### Chunk Storage
+
+I've put all the functions and definitions needed to create, save and load chunks in a single class called Voxel_IO.cs
+
+Chunk units and  simple singleton patern.
+
+{% highlight csharp %}
+public class VA_Voxel_IO
+{
+	public const int CHUNK_UNITS = 8;
+	public const int CHUNK_UNITS_M1 = CHUNK_UNITS-1;
+	public const int CHUNK_UNITS_HALF = CHUNK_UNITS/2;
+	public const int CHUNK_UNITS_POW2 = CHUNK_UNITS*CHUNK_UNITS;
+	public const int CHUNK_UNITS_POW3 = CHUNK_UNITS*CHUNK_UNITS*CHUNK_UNITS;
+{% endhighlight %}
+
+
+
+I decided to split the chunk class in two parts
+
+{% highlight csharp %}
+public class FA_Chunk_Base
+{
+	public byte x;
+	public byte y;
+	public byte z;
+	public int fileSeekLoction;
+}
+
+public class FA_Chunk_Info : FA_Chunk_Base
+{
+	public byte[] points;
+	public byte[] material;
+
+	public byte getVoxelPoint(float x, float y, float z)
+	{
+	    int i = (int)(x%CHUNK_UNITS + z*CHUNK_UNITS + y*CHUNK_UNITS_POW2) ;
+	    if(i>=CHUNK_UNITS_POW3)
+	    {
+		Debug.Log("invalid chunk position!");
+		i=0;
+	    }
+	    return points[i];
+	}
+
+
+	public override string ToString()
+	{
+	    return $"ChunkInfo({x}, {y}, {z})";
+	}
+
 }
 {% endhighlight %}
