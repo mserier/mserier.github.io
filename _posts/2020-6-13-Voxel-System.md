@@ -151,8 +151,8 @@ private void GenerateChunkMesh(object FA_Voxel_Render_LocalPosition)
 }
 {% endhighlight %}
 
-The function used for step 2 is as follows. Here it becomes aparent why we should just double the values at the edges of the chunks.
-For every voxel we have to check if it should get it's value from a neighboring chunk. I have optimised it a little by only checking the voxels that are on the edge of the chunk but I did not put much effort in because I would change the chunk behaviour anyway.
+The function used for step 2 is as follows. Here it becomes apparent why we should just double the values at the edges of the chunks.
+For every voxel we have to check if it should get it's value from a neighboring chunk. I have optimised it a little by only checking the voxels that are on the edge of the chunk but I did not put much effort in because I was planning to change the chunk behaviour anyway.
 
 
 {% highlight csharp %}
@@ -204,7 +204,7 @@ int createTriangleIndex(byte[] values)
 }
 {% endhighlight %}
 
-And for step 4 we convert the vertex index into the corresponding position (relative to the voxel itself). This position could be interpolated and this can look better depending on the aesthetics you are going for but in my opinion it looks messy if the scale is large. I also intent to directly modify the voxels on an individual level, if you interpolate this means that the voxels will grow smoothly but to stop at the right time can get tedious in my experience.
+And for step 4 we convert the vertex index into the corresponding position (relative to the voxel itself). This position could be interpolated and this can look better depending on the aesthetics you are going for but in my opinion it looks messy if the scale is large. I also intent to directly modify the voxels on an individual level, if you interpolate this means that the voxels will grow smoothly. This does look nice but to stop at the right time can get tedious for the player in my experience.
 
 {% highlight csharp %}
 //index is the triangulation table index
@@ -268,9 +268,13 @@ return res/2f;
 
 ### Chunk Storage
 
-I've put all the functions and definitions needed to create, save and load chunks in a single class called Voxel_IO.cs
+Now we know how to generate the chunk from the values it's time to generate and get these values. We could generate the values and feed this into our chunk generation class but since we need to think about how we interact with the values anyway I decided to first create the class which is responsible for storing and retreiving the values.
 
-Chunk units and  simple singleton patern.
+I've put all the functions and definitions needed to create, save and load chunks in the class called Voxel_IO.cs
+
+Since this class is quite big I will post it in small parts.
+
+#### Chunk units and simple singleton patern.
 
 {% highlight csharp %}
 public class VA_Voxel_IO
@@ -283,8 +287,12 @@ public class VA_Voxel_IO
 {% endhighlight %}
 
 
+#### Chunk data structure
 
-I decided to split the chunk class in two parts
+I decided to split the chunk class in two parts. Later on the class type will be used to know which "state" the chunk is in.
+1. Never generated or saved to the disk.
+2. Generated previously but not loaded in ram (stored on the disk).
+3. Loaded in ram.
 
 {% highlight csharp %}
 public class FA_Chunk_Base
