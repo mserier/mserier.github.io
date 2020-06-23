@@ -333,7 +333,7 @@ public class FA_Chunk_Info : FA_Chunk_Base
 
 For easy access I've decided that all chunks are accessed through one function named getChunk(). This function is responsible for determining the "state" the chunk is in and to load it appropriately. Since the chunk is a (shared) resource I've protected it with a simple Mutex.
 
-The chunks are tracked in the Dictionary chunkTable.
+The chunks are tracked in the Dictionary chunkTable to unload a chunk we construct the FA_Chunk_Base from the loaded chunk and update this state in the chunkTable.
 
 {% highlight csharp %}
 
@@ -377,6 +377,137 @@ public FA_Chunk_Info getChunk(FA_Vector3Byte chunkPos, FA_Voxel_Grid grid)
 	}
 
 	return res;
+}
+
+
+public void ReleaseChunk(FA_Vector3Byte chunkPos)
+{
+	FA_Chunk_Base b = new FA_Chunk_Base();
+	b.x = chunkTable[chunkPos].x;
+	b.y = chunkTable[chunkPos].y;
+	b.z = chunkTable[chunkPos].z;
+	b.fileSeekLoction = chunkTable[chunkPos].fileSeekLoction;
+	chunkTable[chunkPos] = b;
+}
+
+{% endhighlight %}
+
+
+#### Storing chunks in storage
+
+Since the chunks file can become quite large when there's a lot of terrain I've attemped to nmake it random access. This is the first time I've tried something like this and I haven't tested or benchmarked it. 
+
+###### Another option (which could especially be usefull for terrain) would be to only save the points which are changed. In this case you would always generate the chunk and then apply the changes which are loaded on disk. Since I was planning to generate the chunks on the cpu this wouldn't be viable but if you can generate it fast enough (through a compute shader) this approach would probably better. It however would make random access a lot more difficult since the chunks won't have fixed sizes anymore.
+
+{% highlight csharp %}
+
+public void Write(FA_Voxel_Grid grid)
+{
+	//Saving goes in two steps, first the ChunkTable is updated and then the VoxelData
+
+	string fileName = "World_Info_"+grid.GetGridName()+".dat";
+
+	using(FileStream  fileStream = new FileStream(fileName, FileMode.Create))
+	{
+	    using (BinaryWriter writer = new BinaryWriter(fileStream))
+	    {
+		int i=0;
+		foreach (FA_Chunk_Info chunk in chunkTable.Values)
+		{
+		    writer.Write(chunk.x);
+		    writer.Write(chunk.y);
+		    writer.Write(chunk.z);
+		    writer.Write((i*(CHUNK_UNITS_POW3+CHUNK_UNITS_POW3/8)));
+		    i++;
+		}
+		writer.Flush();
+		writer.Close();
+	    }
+	    Debug.Log(grid.GetGridName()+" saved");
+	}
+
+	fileName = "World_Voxels_"+grid.GetGridName()+".dat";
+
+	using(FileStream fileStream = new FileStream(fileName, FileMode.Create))
+	{
+	    using (BinaryWriter writer = new BinaryWriter(fileStream))
+	    {
+		foreach (FA_Chunk_Info chunk in chunkTable.Values)
+		{
+		    for(int i=0;i<CHUNK_UNITS_POW3;i++)
+		    {
+			writer.Write(chunk.points[i]);
+						if(i%8==0)
+						{
+			    writer.Write(chunk.material[i/8]);
+						}
+		    }
+		}
+		writer.Flush();
+		writer.Close();
+	    }
+	}
+
+	}
+
+public void Read(FA_Voxel_Grid grid)
+{
+	string fileName = "World_Info_"+grid.GetGridName()+".dat";
+
+	using(FileStream  fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
+	{            
+	    using (BinaryReader reader = new BinaryReader(fileStream))
+	    {
+		while(fileStream.Length!=fileStream.Position)
+		{
+		    FA_Chunk_Base nC = new FA_Chunk_Base();
+		    nC.x = reader.ReadByte();
+					nC.y = reader.ReadByte();
+					nC.z = reader.ReadByte();
+					nC.fileSeekLoction = -1;
+		    chunkTable.Add(new FA_Vector3Byte(nC.x, nC.y, nC.z), nC);
+		}
+		reader.Close();
+	    }
+	}
+}
+
+private void ReadChunk(FA_Vector3Byte chunkPos, FA_Voxel_Grid grid)
+{
+
+	string fileName = "FA_World_Voxels_"+grid.GetGridName()+".dat";
+
+	using(FileStream fileStream = new FileStream(fileName, FileMode.OpenOrCreate))
+	{
+	    fileStream.Seek(chunkTable[chunkPos].fileSeekLoction, SeekOrigin.Begin);
+
+	    using (BinaryReader reader = new BinaryReader(fileStream))
+	    {
+		byte[] points = new byte[CHUNK_UNITS_POW3];
+		byte[] materials = new byte[CHUNK_UNITS_POW3/8];
+		for(int i=0;i<points.Length;i++)
+		{
+		    points[i] = reader.ReadByte();
+		    if(i%8==0)
+		    {
+			materials[i/8]=reader.ReadByte();
+		    }
+		}
+		byte x=chunkTable[chunkPos].x;
+		byte y=chunkTable[chunkPos].y;
+		byte z=chunkTable[chunkPos].z;
+
+		chunkTable[chunkPos] = new FA_Chunk_Info();
+		chunkTable[chunkPos].x = x;
+		chunkTable[chunkPos].x = y;
+		chunkTable[chunkPos].x = z;
+
+		((FA_Chunk_Info)chunkTable[chunkPos]).points=points;
+		((FA_Chunk_Info)chunkTable[chunkPos]).material=materials;
+
+		reader.Close();
+	    }
+	}
 }
 
 {% endhighlight %}
