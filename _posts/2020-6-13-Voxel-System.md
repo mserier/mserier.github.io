@@ -327,3 +327,56 @@ public class FA_Chunk_Info : FA_Chunk_Base
 
 }
 {% endhighlight %}
+
+
+#### Storing chunks in memory
+
+For easy access I've decided that all chunks are accessed through one function named getChunk(). This function is responsible for determining the "state" the chunk is in and to load it appropriately. Since the chunk is a (shared) resource I've protected it with a simple Mutex.
+
+The chunks are tracked in the Dictionary chunkTable.
+
+{% highlight csharp %}
+
+private Dictionary<FA_Vector3Byte, FA_Chunk_Base> chunkTable = new Dictionary<FA_Vector3Byte, FA_Chunk_Base>();
+
+private static Mutex chunkAccessMux = new Mutex();
+
+//chunkPos should be relative to the grid
+public FA_Chunk_Info getChunk(FA_Vector3Byte chunkPos, FA_Voxel_Grid grid)
+{
+	FA_Chunk_Info res;
+
+	//Look the chunk up in the Chunktable, if it's not there then generate it and add it. Else check if loaded and return
+	if(chunkTable.ContainsKey(chunkPos))
+	{
+		if (chunkTable[chunkPos] is FA_Chunk_Info chunk_info)
+		{
+			//Chunk already loaded from disk
+			res = (FA_Chunk_Info)chunkTable[chunkPos];
+		}
+		else// chunkTable[chunkPos] is FA_Chunk_Base chunk_base
+		{
+			//Chunk exist in disk but hasn't loaded yet
+
+			chunkAccessMux.WaitOne();
+			ReadChunk(chunkPos, grid);
+			chunkAccessMux.ReleaseMutex();
+			res = (FA_Chunk_Info)chunkTable[chunkPos];
+		}
+
+	}
+	else
+	{
+		//Chunk doesn't exits, so we generate it
+
+		//Debug.Log("Generating new chunk data for :"+ chunkPos);
+		chunkAccessMux.WaitOne();
+		GenChunk(chunkPos, grid);
+		chunkAccessMux.ReleaseMutex();
+		res = (FA_Chunk_Info)chunkTable[chunkPos];
+	}
+
+	return res;
+}
+
+{% endhighlight %}
