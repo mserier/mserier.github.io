@@ -10,7 +10,7 @@ tags:
   - java
   - networking
   - arduino
-published: true
+published: false
 ---
 
 You might find yourself in the situation where you want to integrate your game with external services. Custom lighting for your keyboard and mouse, interactive merchandise or even stage effects for a tournament.
